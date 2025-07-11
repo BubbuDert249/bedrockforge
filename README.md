@@ -6,12 +6,12 @@ How to create a mod: <br>
 4. Create a info.json <br>
 Info.json example: <br>
 ```
-{ <br>
-  "name": "My Mod", <br>
-  "version": "1.0.0", <br>
-  "creator": "You", <br>
-  "description": "Example BedrockForge mod.", <br>
-  "requires_minecraft": "1.21", <br>
-  "preview": false <br>
-} <br>
+{
+  "name": "My Mod",
+  "version": "1.0.0",
+  "creator": "You",
+  "description": "Example BedrockForge mod.",
+  "requires_minecraft": "1.21",
+  "preview": false
+}
 ```
