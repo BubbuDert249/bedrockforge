@@ -4,6 +4,7 @@ How to create a mod: <br>
 2. Make a folder with any name inside "mods" <br>
 3. Add inside it your behavior pack named "behavior" and resource pack named "resource" <br>
 4. Create a info.json <br>
+<br>
 Info.json example: <br>
 ```
 {
