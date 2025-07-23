@@ -106,7 +106,6 @@ class ModManagerApp:
         if preview:
             version_text += " Preview"
 
-        # Icon
         if icon_rel_path:
             icon_path = os.path.join(temp_dir, icon_rel_path)
             try:
@@ -151,6 +150,7 @@ class ModManagerApp:
         base_path = self.minecraft_path.get()
         dev_behavior_dir = os.path.join(base_path, "behavior_packs")
         dev_resource_dir = os.path.join(base_path, "resource_packs")
+        display_name = mod_name or mod_file
 
         os.makedirs(dev_behavior_dir, exist_ok=True)
         os.makedirs(dev_resource_dir, exist_ok=True)
@@ -158,22 +158,56 @@ class ModManagerApp:
         mods_dir = os.path.join(os.getcwd(), "mods")
         mod_path = os.path.join(mods_dir, mod_file)
 
+        behavior_dst = os.path.join(dev_behavior_dir, mod_name + "_behavior")
+        resource_dst = os.path.join(dev_resource_dir, mod_name + "_resource")
+
         with tempfile.TemporaryDirectory() as tmpdir:
             try:
                 with zipfile.ZipFile(mod_path, 'r') as zip_ref:
                     zip_ref.extractall(tmpdir)
+
+                info_path = os.path.join(tmpdir, "info.json")
+                if not os.path.isfile(info_path):
+                    messagebox.showerror("Missing Info", f"The mod '{display_name}' is missing info.json.")
+                    return
+
+                with open(info_path, "r") as f:
+                    info = json.load(f)
+
+                jsfiles = info.get("jsfile")
+                if not jsfiles:
+                    messagebox.showerror(
+                        "Missing JavaScript File",
+                        f"The mod '{display_name}' is missing the 'jsfile' entry in info.json."
+                    )
+                    return
+
+                if isinstance(jsfiles, str):
+                    jsfiles = [jsfiles]
+
+                for jsfile in jsfiles:
+                    js_src = os.path.join(tmpdir, jsfile)
+                    if not os.path.isfile(js_src):
+                        messagebox.showerror("Missing Script", f"Mod '{display_name}' is missing required JS file: {jsfile}")
+                        return
+
                 behavior_src = os.path.join(tmpdir, "behavior")
                 resource_src = os.path.join(tmpdir, "resource")
-                behavior_dst = os.path.join(dev_behavior_dir, mod_name + "_behavior")
-                resource_dst = os.path.join(dev_resource_dir, mod_name + "_resource")
 
                 if new_state:
                     if os.path.exists(behavior_dst):
                         shutil.rmtree(behavior_dst)
                     if os.path.exists(resource_dst):
                         shutil.rmtree(resource_dst)
+
                     shutil.copytree(behavior_src, behavior_dst)
                     shutil.copytree(resource_src, resource_dst)
+
+                    scripts_dst_dir = os.path.join(behavior_dst, "scripts")
+                    os.makedirs(scripts_dst_dir, exist_ok=True)
+                    for jsfile in jsfiles:
+                        js_src = os.path.join(tmpdir, jsfile)
+                        shutil.copy2(js_src, os.path.join(scripts_dst_dir, os.path.basename(jsfile)))
                 else:
                     if os.path.exists(behavior_dst):
                         shutil.rmtree(behavior_dst)
