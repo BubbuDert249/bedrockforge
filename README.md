@@ -38,4 +38,6 @@ jsfile - The file that  uses the JS API, can add more (like ["script1.js", "scri
 10. Run BedrockForge, click Enable on your mod <br>
 # FOR DEVS: <br>
 How the Windows port works? It runs on tkinter for GUI, PIL for mod icon and os,shutil for managing files and folders <br>
-How the Mac port works? It actually runs on shell to run the uncompiled AppleScript and AppleScript for copying and Dialogs for GUI <br>
+How the Mac port works? It runs on shell to run the uncompiled AppleScript and AppleScript for copying and Dialogs for GUI <br>
+The Mac port was built on Windows <br>
+The Mac port is for Edu Edition, because only Windows-based devices can run Bedrock, but ones that aren't (like Android or Mac) just have Edu <br>
