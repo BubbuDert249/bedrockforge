@@ -36,3 +36,6 @@ jsfile - The file that  uses the JS API, can add more (like ["script1.js", "scri
 8. Rename the ```.zip``` to ```.bdr``` <br>
 9. Put the ```.bdr``` file directly in the root of the ```mods``` folder <br>
 10. Run BedrockForge, click Enable on your mod <br>
+# FOR DEVS: <br>
+How the Windows port works? It runs on tkinter for GUI, PIL for mod icon and os,shutil for managing files and folders <br>
+How the Mac port works? It actually runs on shell to run the uncompiled AppleScript and AppleScript for copying and Dialogs for GUI <br>
