@@ -6,13 +6,13 @@ Click "Enable" to enable the mod, or "Disable" to disable it <br>
 Minecraft Bedrock/EDU locations: <br>
 Windows: <br>
 Non-preview: <br>
-```%LocalAppData%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang```
+```%LocalAppData%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang``` <br>
 Preview: <br>
-```%LocalAppData%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe_x64__8wekyb3d8bbwe\LocalState\games\com.mojang```
+```%LocalAppData%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe_x64__8wekyb3d8bbwe\LocalState\games\com.mojang``` <br>
 or <br>
-```%LocalAppData%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang```
+```%LocalAppData%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang``` <br>
 Mac: <br>
-```~/Library/Application Support/minecrafteducationedition/games/com.mojang/```
+```~/Library/Application Support/minecrafteducationedition/games/com.mojang/``` <br>
 <br>
 # How to create a mod: <br>
 1. Create a ```mods``` folder (if non-existent) in the app folder (or create a BedrockMods folder in ~ for Mac Port) <br>
