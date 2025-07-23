@@ -7,7 +7,7 @@ Click "Enable" to enable the mod, or "Disable" to disable it <br>
 # How to create a mod: <br>
 1. Create a ```mods``` folder (if non-existent) in the app folder <br>
 2. Make a folder with any name inside ```mods``` <br>
-3. Add inside it your behavior pack named ```behavior``` and resource pack named ```resource``` <br>
+3. Add inside it your behavior pack named ```behavior``` and resource pack named ```resource``` (as folders) <br>
 4. Put a icon to the folder
 5. Create a ```info.json``` <br>
 ```Info.json``` example: <br>
