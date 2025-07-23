@@ -3,6 +3,16 @@ Click "Specify Minecraft Bedrock Location" <br>
 Add ```.bdr``` files to the ```mods``` folder <br>
 Restart BedrockForge <br>
 Click "Enable" to enable the mod, or "Disable" to disable it <br>
+Minecraft Bedrock/EDU locations: <br>
+Windows: <br>
+Non-preview: <br>
+```%LocalAppData%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang```
+Preview: <br>
+```%LocalAppData%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe_x64__8wekyb3d8bbwe\LocalState\games\com.mojang```
+or <br>
+```%LocalAppData%\Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang```
+Mac: <br>
+```~/Library/Application Support/minecrafteducationedition/games/com.mojang/```
 <br>
 # How to create a mod: <br>
 1. Create a ```mods``` folder (if non-existent) in the app folder (or create a BedrockMods folder in ~ for Mac Port) <br>
