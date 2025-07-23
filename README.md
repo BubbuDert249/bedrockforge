@@ -29,7 +29,8 @@ description - Description of the mod <br>
 requires_minecraft - The required Minecraft Bedrock version <br>
 preview - Is the mod for Bedrock preview <br>
 icon - Icon name for the mod icon <br>
-6. Zip the contents of the folder <br>
-7. Rename the ```.zip``` to ```.bdr``` <br>
-8. Put the ```.bdr``` file directly in the root of the ```mods``` folder <br>
-9. Run BedrockForge, click Enable on your mod <br>
+6. Add a main.js using the Bedrock JavaScript API (required) <br>
+7. Zip the contents of the folder <br>
+8. Rename the ```.zip``` to ```.bdr``` <br>
+9. Put the ```.bdr``` file directly in the root of the ```mods``` folder <br>
+10. Run BedrockForge, click Enable on your mod <br>
