@@ -40,7 +40,7 @@ description - Description of the mod <br>
 requires_minecraft - The required Minecraft Bedrock version <br>
 preview - Is the mod for Bedrock preview <br>
 icon - Icon name for the mod icon <br>
-jsfile - The file that  uses the JS API, can add more (like ["script1.js", "script2.js"] )
+jsfile - The file that  uses the JS API, can add more (like ["script1.js", "script2.js"] ) <br>
 6. Add a ```.js``` file (one or more, value of jsfile in the JSON) using the Bedrock JavaScript API (required) <br>
 7. Zip the contents of the folder <br>
 8. Rename the ```.zip``` to ```.bdr``` <br>
