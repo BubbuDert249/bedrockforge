@@ -1,2 +1,2 @@
 #!/bin/bash
-osascript "$PWD/../Resources/script.applescript"
+osascript "$(dirname "$0")/../Resources/script.applescript"
