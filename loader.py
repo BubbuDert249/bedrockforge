@@ -7,6 +7,8 @@ import shutil
 import zipfile
 import tempfile
 import sys
+import nbtlib
+import glob
 
 DATA_FILE = "data.json"
 
@@ -16,6 +18,50 @@ def resource_path(relative_path):
     except Exception:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
+
+def enable_gametest_and_packs(minecraft_base_path, bp_uuid, bp_version, rp_uuid, rp_version):
+    worlds_dir = os.path.join(minecraft_base_path, "minecraftWorlds")
+
+    if not os.path.isdir(worlds_dir):
+        return
+    for world_path in glob.glob(os.path.join(worlds_dir, "*")):
+        level_dat = os.path.join(world_path, "level.dat")
+        if not os.path.isfile(level_dat):
+            continue
+
+        try:
+            nbt_data = nbtlib.load(level_dat)
+
+            # Ensure 'Data' compound exists
+            if 'Data' not in nbt_data:
+                nbt_data['Data'] = nbtlib.Compound()
+
+            # Enable GameTestNetEnabled
+            nbt_data['Data']['GameTestNetEnabled'] = nbtlib.Byte(1)
+
+            # Save changes
+            nbt_data.save(level_dat)
+        except Exception as e:
+            print(f"Failed to enable GameTest for {world_path}: {e}")
+
+        # Inject packs
+        inject_pack(os.path.join(world_path, "world_behavior_packs.json"),
+                    bp_uuid, bp_version)
+        inject_pack(os.path.join(world_path, "world_resource_packs.json"),
+                    rp_uuid, rp_version)
+
+def inject_pack(json_path, uuid, version):
+    try:
+        packs = []
+        if os.path.exists(json_path):
+            with open(json_path, "r") as f:
+                packs = json.load(f)
+        if not any(p.get("pack_id") == uuid for p in packs):
+            packs.append({"pack_id": uuid, "version": version})
+        with open(json_path, "w") as f:
+            json.dump(packs, f, indent=4)
+    except Exception as e:
+        print(f"Failed to inject pack into {json_path}: {e}")
 
 class ModManagerApp:
     def __init__(self, root):
@@ -188,35 +234,45 @@ class ModManagerApp:
                 for jsfile in jsfiles:
                     js_src = os.path.join(tmpdir, jsfile)
                     if not os.path.isfile(js_src):
-                        messagebox.showerror("Missing Script", f"Mod '{display_name}' is missing required JS file: {jsfile}")
+                        messagebox.showerror("Missing JS File", f"File '{jsfile}' not found in mod '{display_name}'.")
                         return
 
-                behavior_src = os.path.join(tmpdir, "behavior")
-                resource_src = os.path.join(tmpdir, "resource")
-
                 if new_state:
-                    if os.path.exists(behavior_dst):
-                        shutil.rmtree(behavior_dst)
-                    if os.path.exists(resource_dst):
-                        shutil.rmtree(resource_dst)
+                    # Copy behavior and resource packs to Minecraft directories
+                    behavior_src = os.path.join(tmpdir, "behavior_pack")
+                    resource_src = os.path.join(tmpdir, "resource_pack")
 
-                    shutil.copytree(behavior_src, behavior_dst)
-                    shutil.copytree(resource_src, resource_dst)
+                    if os.path.exists(behavior_src):
+                        if os.path.exists(behavior_dst):
+                            shutil.rmtree(behavior_dst)
+                        shutil.copytree(behavior_src, behavior_dst)
 
-                    scripts_dst_dir = os.path.join(behavior_dst, "scripts")
-                    os.makedirs(scripts_dst_dir, exist_ok=True)
-                    for jsfile in jsfiles:
-                        js_src = os.path.join(tmpdir, jsfile)
-                        shutil.copy2(js_src, os.path.join(scripts_dst_dir, os.path.basename(jsfile)))
+                    if os.path.exists(resource_src):
+                        if os.path.exists(resource_dst):
+                            shutil.rmtree(resource_dst)
+                        shutil.copytree(resource_src, resource_dst)
+
+                    bp_uuid = info.get("bp_uuid")
+                    bp_version = info.get("bp_version")
+                    rp_uuid = info.get("rp_uuid")
+                    rp_version = info.get("rp_version")
+
+                    enable_gametest_and_packs(base_path, bp_uuid, bp_version, rp_uuid, rp_version)
+                    messagebox.showinfo("Mod Enabled", f"Mod '{display_name}' has been enabled.")
                 else:
+                    # Remove packs from Minecraft directories
                     if os.path.exists(behavior_dst):
                         shutil.rmtree(behavior_dst)
                     if os.path.exists(resource_dst):
                         shutil.rmtree(resource_dst)
+                    messagebox.showinfo("Mod Disabled", f"Mod '{display_name}' has been disabled.")
             except Exception as e:
-                messagebox.showerror("Error", f"Failed to {'enable' if new_state else 'disable'} mod {mod_file}:\n{e}")
+                messagebox.showerror("Error", f"Failed to toggle mod '{display_name}': {e}")
 
-if __name__ == "__main__":
+def main():
     root = tk.Tk()
     app = ModManagerApp(root)
     root.mainloop()
+
+if __name__ == "__main__":
+    main()
